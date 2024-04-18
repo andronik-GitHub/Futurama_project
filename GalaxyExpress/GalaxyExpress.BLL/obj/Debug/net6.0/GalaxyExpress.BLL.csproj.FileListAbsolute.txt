@@ -1,0 +1,17 @@
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\bin\Debug\net6.0\GalaxyExpress.BLL.deps.json
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\bin\Debug\net6.0\GalaxyExpress.BLL.runtimeconfig.json
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\bin\Debug\net6.0\GalaxyExpress.BLL.dll
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\bin\Debug\net6.0\GalaxyExpress.BLL.pdb
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\bin\Debug\net6.0\GalaxyExpress.DAL.dll
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\bin\Debug\net6.0\GalaxyExpress.DAL.pdb
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\obj\Debug\net6.0\GalaxyExpress.BLL.csproj.AssemblyReference.cache
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\obj\Debug\net6.0\GalaxyExpress.BLL.GeneratedMSBuildEditorConfig.editorconfig
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\obj\Debug\net6.0\GalaxyExpress.BLL.AssemblyInfoInputs.cache
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\obj\Debug\net6.0\GalaxyExpress.BLL.AssemblyInfo.cs
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\obj\Debug\net6.0\GalaxyExpress.BLL.csproj.CoreCompileInputs.cache
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\obj\Debug\net6.0\GalaxyExpress.BLL.csproj.CopyComplete
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\obj\Debug\net6.0\GalaxyExpress.BLL.dll
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\obj\Debug\net6.0\refint\GalaxyExpress.BLL.dll
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\obj\Debug\net6.0\GalaxyExpress.BLL.pdb
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\obj\Debug\net6.0\GalaxyExpress.BLL.genruntimeconfig.cache
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.BLL\obj\Debug\net6.0\ref\GalaxyExpress.BLL.dll
