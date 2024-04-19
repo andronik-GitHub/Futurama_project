@@ -18,9 +18,7 @@ namespace GalaxyExpress.API.Mapping.Configurations
                 .NewConfig()
                 .Map(dest => dest.EmailId, src => src.EmailId)
                 .Map(dest => dest.EmailAddress, src => src.EmailAddress)
-                .Map(
-                    dest => dest.UserName, 
-                    src => $"{src.User.FirstName} {src.User.LastName}{(src.User.FatherName == null ? string.Empty : " " + src.User.FatherName)}")
+                .Map(dest => dest.UserName, src => src.User.UserName)
                 .Map(dest => dest.DateCreated, src => src.DateCreated)
                 .Map(dest => dest.DateUpdated, src => src.DateUpdated)
                 .Map(dest => dest.DateDeleted, src => src.DateDeleted)

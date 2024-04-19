@@ -12,3 +12,4 @@ D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.DAL\obj\Debug\net6.0\refi
 D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.DAL\obj\Debug\net6.0\GalaxyExpress.DAL.pdb
 D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.DAL\obj\Debug\net6.0\GalaxyExpress.DAL.genruntimeconfig.cache
 D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.DAL\obj\Debug\net6.0\ref\GalaxyExpress.DAL.dll
+D:\IT\AnyProjects\Futurama\GalaxyExpress\GalaxyExpress.DAL\obj\Debug\net6.0\GalaxyExpress.DAL.sourcelink.json

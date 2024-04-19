@@ -1,12 +1,7 @@
 ﻿using Bogus;
 using GalaxyExpress.DAL.Entities;
+using GalaxyExpress.DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GalaxyExpress.DAL.Bogus
 {
@@ -67,37 +62,37 @@ namespace GalaxyExpress.DAL.Bogus
         public static void InitBogusData()
         {
             // Add IdentityRoles
-            //Roles.AddRange(new List<IdentityRole<Guid>>
-            //{
-            //    new IdentityRole<Guid>
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        Name = Authorization.Roles.Administrator.ToString(),
-            //        NormalizedName = Authorization.Roles.Administrator.ToString().ToUpper()
-            //    },
-            //    new IdentityRole<Guid>
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        Name = Authorization.Roles.Moderator.ToString(),
-            //        NormalizedName = Authorization.Roles.Moderator.ToString().ToUpper()
-            //    },
-            //    new IdentityRole<Guid>
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        Name = Authorization.Roles.User.ToString(),
-            //        NormalizedName = Authorization.Roles.User.ToString().ToUpper()
-            //    }
-            //});
+            Roles.AddRange(new List<IdentityRole<Guid>>
+            {
+                new IdentityRole<Guid>
+                {
+                    Id = Guid.NewGuid(),
+                    Name = Authorization.Roles.Admin.ToString(),
+                    NormalizedName = Authorization.Roles.Admin.ToString().ToUpper()
+                },
+                new IdentityRole<Guid>
+                {
+                    Id = Guid.NewGuid(),
+                    Name = Authorization.Roles.Manager.ToString(),
+                    NormalizedName = Authorization.Roles.Manager.ToString().ToUpper()
+                },
+                new IdentityRole<Guid>
+                {
+                    Id = Guid.NewGuid(),
+                    Name = Authorization.Roles.User.ToString(),
+                    NormalizedName = Authorization.Roles.User.ToString().ToUpper()
+                }
+            });
 
             // Add IdentityUsers
             Users.AddRange(GetUserGenerator().Generate(USERS));
 
             // Add IdentityUserRole
-            //UsersRoles.AddRange(Users.Select(u => new IdentityUserRole<Guid>
-            //{
-            //    RoleId = Roles[new Random().Next(0, Roles.Count)].Id,
-            //    UserId = u.Id
-            //}));
+            UsersRoles.AddRange(Users.Select(u => new IdentityUserRole<Guid>
+            {
+                RoleId = Roles[new Random().Next(0, Roles.Count)].Id,
+                UserId = u.Id
+            }));
 
 
             Users.ForEach(user => Emails.AddRange(GetEmailGenerator(user.Id).Generate(2)));

@@ -11,5 +11,8 @@ namespace GalaxyExpress.DAL.Repositories.Interfaces
     {
         Task<int> GetCountOfUsersAsync();
         Task<int> GetCountOfUsersNotDeletedAsync();
+        Task<User?> GetByEmailAsync(string email);
+        Task<User?> GetByUsernameAsync(string username); 
+        Task<User?> GetByLoginAsync(string login);
     }
 }

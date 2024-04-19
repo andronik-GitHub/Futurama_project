@@ -42,12 +42,20 @@ namespace GalaxyExpress.DAL.Repositories
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await entities.AsNoTracking().Include(u => u.Emails).ToListAsync();
+            return await entities
+                .AsNoTracking()
+                .Include(u => u.Emails)
+                .Include(u => u.PhoneNumbers)
+                .ToListAsync();
         }
 
         public async Task<User?> GetByIdAsync(Guid key)
         {
-            return await entities.AsNoTracking().Include(u => u.Emails).FirstOrDefaultAsync(u => u.Id == key);
+            return await entities
+                .AsNoTracking()
+                .Include(u => u.Emails)
+                .Include(u => u.PhoneNumbers)
+                .FirstOrDefaultAsync(u => u.Id == key);
         }
 
         public async Task UpdateAsync(User entity)
@@ -93,9 +101,47 @@ namespace GalaxyExpress.DAL.Repositories
 
         public async Task<int> GetCountOfUsersNotDeletedAsync()
         {
-            var count = await entities.AsNoTracking().Where(u => u.DateDeleted == null).CountAsync();
+            var count = await entities
+                .AsNoTracking()
+                .Where(u => u.DateDeleted == null)
+                .Include(u => u.Emails)
+                .Include(u => u.PhoneNumbers)
+                .CountAsync();
 
             return count;
+        }
+
+        public async Task<User?> GetByEmailAsync(string email)
+        {
+            Guid? userId = await dbContext.Emails
+                .AsNoTracking()
+                .Where(e => e.EmailAddress == email)
+                .Select(e => e.UserId)
+                .FirstOrDefaultAsync();
+
+            if (userId == null) return null;
+
+            var user = await GetByIdAsync((Guid)userId);
+
+            return user;
+        }
+
+        public async Task<User?> GetByUsernameAsync(string username)
+        {
+            return await entities
+                .AsNoTracking()
+                .Include(u => u.Emails)
+                .Include(u => u.PhoneNumbers)
+                .FirstOrDefaultAsync(u => u.UserName == username);
+        }
+        
+        public async Task<User?> GetByLoginAsync(string login)
+        {
+            return await entities
+                .AsNoTracking()
+                .Include(u => u.Emails)
+                .Include(u => u.PhoneNumbers)
+                .FirstOrDefaultAsync(u => u.Login == login);
         }
     }
 }

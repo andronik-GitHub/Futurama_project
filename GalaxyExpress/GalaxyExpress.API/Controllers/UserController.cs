@@ -1,5 +1,7 @@
 ﻿using GalaxyExpress.BLL.DTOs.UserDTOs;
 using GalaxyExpress.BLL.Services.Interfaces;
+using GalaxyExpress.DAL.Entities.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -349,6 +351,122 @@ namespace GalaxyExpress.API.Controllers
             }
         }
 
+
+        #endregion
+
+        #region IDENTITY
+
+
+        /// <summary>
+        /// Get secured data
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// GET https://localhost:5001/galaxy-express/User/secure-data
+        /// </remarks>
+        /// <returns>Returns secured data</returns>
+        /// <response code="200">Success</response>
+        /// <response code="401">If user not authentication</response>
+        [Authorize]
+        [HttpGet("secure-data", Name = nameof(GetSecuredData))] // GET: galaxy-express/User/secure-data
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> GetSecuredData()
+        {
+            try
+            {
+                return await Task.Run(() => Ok("Secured data"));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    "Error in [{ErrorClassName}]->[{MethodName}] => {ErrorMessage}",
+                    this.GetType().Name, nameof(GetSecuredData), ex.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Registering new user
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST https://localhost:4444/galaxy-express/User/register
+        ///     {
+        ///         "PhoneNumber": "+1 00 (000) 00-00",
+        ///         "Login": "John Snow",
+        ///         "Password": "qwerty123",
+        ///         "FirstName": "John",
+        ///         "LastName": "Snow",
+        ///         "FatherName": "Ned"
+        ///     }
+        /// </remarks>
+        /// <param name="model">RegisterModel for creating new user</param>
+        /// <returns>Returns a message about successful user registration</returns>
+        /// <response code="200">Success</response>
+        [HttpPost("register", Name = nameof(RegisterAsync))] // POST: galaxy-express/User/register
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> RegisterAsync(RegisterModel model)
+        {
+            try
+            {
+                var result = await _userService.RegisterAsync(model);
+
+                var resultMessage = result != Guid.Empty ?
+                    $"Successfully registered User with id [{result}]" :
+                    $"Failed to register User with id [{result}]";
+
+                _logger.LogInformation("Result: {Result}", resultMessage);
+                return Ok(resultMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    "Error in [{ErrorClassName}]->[{MethodName}] => {ErrorMessage}",
+                    this.GetType().Name, nameof(RegisterAsync), ex.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Get token
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST https://localhost:4444/galaxy-express/User/token
+        ///     {
+        ///         "Login": "John Snow",
+        ///         "Password": "qwerty123"
+        ///     }
+        /// </remarks>
+        /// <returns>Returns JWT Security token</returns>
+        /// <response code="200">Success</response>
+        [HttpPost("token", Name = nameof(GetTokenAsync))] // POST: ef/User/token
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> GetTokenAsync(LoginModel model)
+        {
+            try
+            {
+                var result = await _userService.GetTokenAsync(model);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    "Error in [{ErrorClassName}]->[{MethodName}] => {ErrorMessage}",
+                    this.GetType().Name, nameof(GetTokenAsync), ex.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
 
         #endregion
     }

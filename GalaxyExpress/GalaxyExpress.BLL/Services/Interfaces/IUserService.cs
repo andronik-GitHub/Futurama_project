@@ -1,4 +1,5 @@
 ﻿using GalaxyExpress.BLL.DTOs.UserDTOs;
+using GalaxyExpress.DAL.Entities.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,10 @@ namespace GalaxyExpress.BLL.Services.Interfaces
     public interface IUserService : IGenericService<Guid, GetDTO_User, InsertDTO_User, UpdateDTO_User>
     {
         Task<int> GetCountOfUsersAsync();
-        Task<int> GetCountOfUsersNotDeletedAsync(); 
+        Task<int> GetCountOfUsersNotDeletedAsync();
+
+        // Identity
+        Task<Guid> RegisterAsync(RegisterModel model);
+        Task<AuthenticationModel> GetTokenAsync(LoginModel model);
     }
 }

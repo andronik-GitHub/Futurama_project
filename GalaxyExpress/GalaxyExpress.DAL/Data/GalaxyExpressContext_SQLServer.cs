@@ -36,7 +36,10 @@ namespace GalaxyExpress.DAL.Data
 
 
             // Seeding data
+            //builder.Entity<IdentityRole<Guid>>().HasData(DataGenerator.Roles);
             //builder.Entity<User>().HasData(DataGenerator.Users);
+            //builder.Entity<IdentityUserRole<Guid>>().HasData(DataGenerator.UsersRoles);
+
             //builder.Entity<PhoneNumber>().HasData(DataGenerator.PhoneNumbers);
             //builder.Entity<Email>().HasData(DataGenerator.Emails);
             //builder.Entity<PaymentCard>().HasData(DataGenerator.PaymentCards);

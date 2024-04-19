@@ -20,9 +20,7 @@ namespace GalaxyExpress.API.Mapping.Configurations
                 .Map(dest => dest.CardNumber, src => src.CardNumber)
                 .Map(dest => dest.Validity, src => src.Validity)
                 .Map(dest => dest.CVV, src => src.CVV)
-                .Map(
-                    dest => dest.UserName,
-                    src => $"{src.User.FirstName} {src.User.LastName}{(src.User.FatherName == null ? string.Empty : " " + src.User.FatherName)}")
+                .Map(dest => dest.UserName, src => src.User.UserName)
                 .Map(dest => dest.DateCreated, src => src.DateCreated)
                 .Map(dest => dest.DateUpdated, src => src.DateUpdated)
                 .Map(dest => dest.DateDeleted, src => src.DateDeleted)

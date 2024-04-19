@@ -4,12 +4,16 @@ using GalaxyExpress.BLL.Services.Interfaces;
 using GalaxyExpress.DAL.Bogus;
 using GalaxyExpress.DAL.Data;
 using GalaxyExpress.DAL.Entities;
+using GalaxyExpress.DAL.Entities.Identity;
 using GalaxyExpress.DAL.Repositories;
 using GalaxyExpress.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -34,11 +38,40 @@ var configuration = builder.Configuration;
 
         #region IDENTITY
         {
+            // Reads data from our previously created JWT Section of appsettings.json
+            builder.Services.Configure<JWT>(configuration.GetSection("JWT"));
+
             // Register ASP.NET Core Identity with method AddIdentity<TUser, TRole>
             builder.Services.AddIdentity<User, IdentityRole<Guid>>()
                 // To register the required EFCore implementation of Identity stores
                 .AddEntityFrameworkStores<GalaxyExpressContext_SQLServer>()
                 .AddDefaultTokenProviders();
+            // Adding Authentication
+            builder.Services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                // Adding JwtBearer
+                .AddJwtBearer(options =>
+                {
+                    options.SaveToken = true;
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero,
+
+                        ValidIssuer = configuration["JWT:Issuer"],
+                        ValidAudience = configuration["JWT:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(configuration["JWT:Key"] ?? "C1CF4B7AC4D2161B6695DC4F55AA3AA23ACCA53A"))
+                    };
+                });
         }
         #endregion
 
@@ -104,6 +137,10 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+
+// Authentication & Authorization
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
