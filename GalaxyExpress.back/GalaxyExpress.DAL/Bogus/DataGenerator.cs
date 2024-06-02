@@ -106,7 +106,6 @@ namespace GalaxyExpress.DAL.Bogus
 
         #endregion
 
-
         private static Faker<User> GetUserGenerator()
         {
             return new Faker<User>()
@@ -148,6 +147,8 @@ namespace GalaxyExpress.DAL.Bogus
 
         public static void InitBogusData()
         {
+            Faker faker = new();
+
             // Add IdentityRoles
             Roles.AddRange(new List<IdentityRole<Guid>>
             {
@@ -171,15 +172,27 @@ namespace GalaxyExpress.DAL.Bogus
                 }
             });
 
+            Roles = Roles.DistinctBy(r => r.Name)
+                .DistinctBy(r => r.NormalizedName).ToList();
+
             // Add IdentityUsers
             Users.AddRange(GetUserGenerator().Generate(USERS));
 
-            // Add IdentityUserRole
-            UsersRoles.AddRange(Users.Select(u => new IdentityUserRole<Guid>
+            var userRoles = new HashSet<(Guid UserId, Guid RoleId)>();
+            foreach (User user in Users)
             {
-                RoleId = Roles[new Random().Next(0, Roles.Count)].Id,
-                UserId = u.Id
-            }));
+                Guid roleId;
+                do
+                {
+                    roleId = faker.PickRandom(Roles).Id;
+                } while (!userRoles.Add((user.Id, roleId)));
+
+                UsersRoles.Add(new IdentityUserRole<Guid>
+                {
+                    RoleId = roleId,
+                    UserId = user.Id
+                });
+            }
 
             Users.ForEach(user => Emails.AddRange(GetEmailGenerator(user.Id).Generate(2)));
             Users.ForEach(user => PhoneNumbers.AddRange(GetPhoneNumberGenerator(user.Id).Generate(2)));
@@ -188,8 +201,6 @@ namespace GalaxyExpress.DAL.Bogus
             ParcelMachines.AddRange(GetParcelMachineGenerator().Generate(50));
             PostBranches.AddRange(GetPostBranchGenerator().Generate(50));
             PromoCodes.AddRange(GetPromoCodeGenerator().Generate(50));
-
-            Faker faker = new();
 
             for (int i = 0; i < 30; ++i)
             {

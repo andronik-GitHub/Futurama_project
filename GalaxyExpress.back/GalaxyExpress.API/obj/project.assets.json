@@ -10910,11 +10910,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\IT\\AnyProjects\\Futurama\\GalaxyExpress\\GalaxyExpress.API\\GalaxyExpress.API.csproj",
+      "projectUniqueName": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.API\\GalaxyExpress.API.csproj",
       "projectName": "GalaxyExpress.API",
-      "projectPath": "D:\\IT\\AnyProjects\\Futurama\\GalaxyExpress\\GalaxyExpress.API\\GalaxyExpress.API.csproj",
+      "projectPath": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.API\\GalaxyExpress.API.csproj",
       "packagesPath": "C:\\Users\\const\\.nuget\\packages\\",
-      "outputPath": "D:\\IT\\AnyProjects\\Futurama\\GalaxyExpress\\GalaxyExpress.API\\obj\\",
+      "outputPath": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -10936,11 +10936,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\IT\\AnyProjects\\Futurama\\GalaxyExpress\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj": {
-              "projectPath": "D:\\IT\\AnyProjects\\Futurama\\GalaxyExpress\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj"
+            "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj": {
+              "projectPath": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj"
             },
-            "D:\\IT\\AnyProjects\\Futurama\\GalaxyExpress\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj": {
-              "projectPath": "D:\\IT\\AnyProjects\\Futurama\\GalaxyExpress\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj"
+            "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj": {
+              "projectPath": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj"
             }
           }
         }

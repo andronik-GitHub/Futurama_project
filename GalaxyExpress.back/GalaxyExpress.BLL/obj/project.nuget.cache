@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "PpqJA2xU1yIb8jY5pvntvnm97Tv9vT/uBJ8TDLsAK8kPMTwYqTXT3glt1S8/BLdUcxd0C8HgrCvxSYHBagoKQQ==",
+  "dgSpecHash": "Bd2gyBVBqk3TTJ3exxx1YjCzvIHBJsTOZ7Xttak6Qs1MEA6FxdJOThN6lSPJ571OeXeymHsKb8SY8FbvC2OLIA==",
   "success": false,
-  "projectFilePath": "D:\\IT\\AnyProjects\\Futurama\\GalaxyExpress\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj",
+  "projectFilePath": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\const\\.nuget\\packages\\bogus\\35.5.0\\bogus.35.5.0.nupkg.sha512",
     "C:\\Users\\const\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

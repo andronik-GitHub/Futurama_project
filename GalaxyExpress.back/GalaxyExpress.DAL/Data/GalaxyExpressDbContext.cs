@@ -11,7 +11,7 @@ using System.Reflection.Emit;
 namespace GalaxyExpress.DAL.Data
 {
     public class GalaxyExpressDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
-    { 
+    {
         public DbSet<Email> Emails { get; set; } = default!;
         public DbSet<PhoneNumber> PhoneNumbers { get; set; } = default!;
         public DbSet<PaymentCard> PaymentCards { get; set; } = default!;
@@ -31,7 +31,8 @@ namespace GalaxyExpress.DAL.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=.;Initial Catalog=GalaxyExpressDb;Trusted_Connection=True;TrustServerCertificate=True;");
+                optionsBuilder.UseSqlServer("Server=.;Initial Catalog=GalaxyExpressDb;Trusted_Connection=True;TrustServerCertificate=True;")
+                    .EnableSensitiveDataLogging();
             }
         }
 
@@ -56,9 +57,14 @@ namespace GalaxyExpress.DAL.Data
             // Seeding data
             DataGenerator.InitBogusData();
 
-            //builder.Entity<IdentityRole<Guid>>().HasData(DataGenerator.Roles);
+            var uniqueRoles = DataGenerator.UsersRoles
+                .GroupBy(ur => new { ur.UserId, ur.RoleId })
+                .Select(g => g.First())
+                .ToList();
+
+            builder.Entity<IdentityRole<Guid>>().HasData(DataGenerator.Roles);
             builder.Entity<User>().HasData(DataGenerator.Users);
-            //builder.Entity<IdentityUserRole<Guid>>().HasData(DataGenerator.UsersRoles);
+            builder.Entity<IdentityUserRole<Guid>>().HasData(uniqueRoles);
 
             builder.Entity<PhoneNumber>().HasData(DataGenerator.PhoneNumbers);
             builder.Entity<Email>().HasData(DataGenerator.Emails);
