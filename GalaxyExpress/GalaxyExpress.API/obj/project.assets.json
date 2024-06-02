@@ -3777,6 +3777,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "AutoMapper": "13.0.1",
+          "FluentValidation": "11.9.1",
           "GalaxyExpress.DAL": "1.0.0",
           "Mapster": "7.4.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.0",
@@ -11020,5 +11022,25 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1100",
+      "level": "Error",
+      "message": "Не удалось разрешить \"AutoMapper (>= 13.0.1)\" для \"net6.0\". PackageSourceMapping включен, следующие источники не рассматривались: C:\\Program Files\\dotnet\\library-packs, Microsoft Visual Studio Offline Packages, nuget.org.",
+      "libraryId": "AutoMapper",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1100",
+      "level": "Error",
+      "message": "Не удалось разрешить \"FluentValidation (>= 11.9.1)\" для \"net6.0\". PackageSourceMapping включен, следующие источники не рассматривались: C:\\Program Files\\dotnet\\library-packs, Microsoft Visual Studio Offline Packages, nuget.org.",
+      "libraryId": "FluentValidation",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

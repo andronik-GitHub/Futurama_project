@@ -12,7 +12,7 @@ namespace GalaxyExpress.DAL.Repositories
 {
     public class PhoneNumberRepository : GenericRepository<PhoneNumber>, IPhoneNumberRepository
     {
-        public PhoneNumberRepository(GalaxyExpressContext_SQLServer dbContext) : base(dbContext)
+        public PhoneNumberRepository(GalaxyExpressDbContext dbContext) : base(dbContext)
         {
         }
 

@@ -12,11 +12,11 @@ namespace GalaxyExpress.DAL.Repositories
 {
     public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity, Guid> where TEntity : BaseEntity
     {
-        protected readonly GalaxyExpressContext_SQLServer dbContext;
+        protected readonly GalaxyExpressDbContext dbContext;
         protected readonly DbSet<TEntity> entities;
 
         protected GenericRepository(
-            GalaxyExpressContext_SQLServer dbContext)
+            GalaxyExpressDbContext dbContext)
         {
             this.dbContext = dbContext;
             this.entities = dbContext.Set<TEntity>();

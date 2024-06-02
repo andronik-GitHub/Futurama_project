@@ -95,6 +95,48 @@
             <response code="400">If invalid data entered</response>
             <response code="500">If it was not possible to adding element to the database</response>
         </member>
+        <member name="T:GalaxyExpress.API.Controllers.ParcelMachineController">
+            <summary>
+            ParcelMachine controller
+            </summary>
+        </member>
+        <member name="M:GalaxyExpress.API.Controllers.ParcelMachineController.#ctor(Microsoft.Extensions.Logging.ILogger{GalaxyExpress.API.Controllers.ParcelMachineController},GalaxyExpress.BLL.Services.Interfaces.IParcelMachineService)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="logger"></param>
+            <param name="parcelMachineService"></param>
+        </member>
+        <member name="M:GalaxyExpress.API.Controllers.ParcelMachineController.GetAllAsync(System.String)">
+            <summary>
+            Getting a list of parcel machines
+            </summary>
+            <param name="searchText"></param>
+            <returns>List</returns>
+        </member>
+        <member name="M:GalaxyExpress.API.Controllers.ParcelMachineController.DeleteAsync(System.Guid)">
+            <summary>
+            Remove parcel machine by Id from database
+            </summary>
+            <param name="id"></param>
+            <returns>ServerResponse</returns>
+        </member>
+        <member name="M:GalaxyExpress.API.Controllers.ParcelMachineController.CheckExistenceByParametersAsync(System.Int32,System.String,System.String)">
+            <summary>
+            Checking existence parcel machine in database
+            </summary>
+            <param name="parcelMachineNumber"></param>
+            <param name="globalAddress"></param>
+            <param name="localAddress"></param>
+            <returns>ServerResponse</returns>
+        </member>
+        <member name="M:GalaxyExpress.API.Controllers.ParcelMachineController.AddAsync(GalaxyExpress.BLL.DTOs.ParcelMachineDTOs.AddParcelMachineDto)">
+            <summary>
+            Add a new parcel machine in databases
+            </summary>
+            <param name="addParcelMachineDTO"></param>
+            <returns>ServerResponse</returns>
+        </member>
         <member name="T:GalaxyExpress.API.Controllers.PaymentCardController">
             <summary>
             paymentCard controller
@@ -278,6 +320,48 @@
             <response code="204">Success</response>
             <response code="400">If invalid data entered</response>
             <response code="500">If it was not possible to adding element to the database</response>
+        </member>
+        <member name="T:GalaxyExpress.API.Controllers.PostBranchController">
+            <summary>
+            PostBranch controller
+            </summary>
+        </member>
+        <member name="M:GalaxyExpress.API.Controllers.PostBranchController.#ctor(Microsoft.Extensions.Logging.ILogger{GalaxyExpress.API.Controllers.PostBranchController},GalaxyExpress.BLL.Services.Interfaces.IPostBranchService)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="logger"></param>
+            <param name="postBranchService"></param>
+        </member>
+        <member name="M:GalaxyExpress.API.Controllers.PostBranchController.GetAllAsync(System.String)">
+            <summary>
+            Getting a list of post branches
+            </summary>
+            <param name="searchText"></param>
+            <returns>List</returns>
+        </member>
+        <member name="M:GalaxyExpress.API.Controllers.PostBranchController.DeleteAsync(System.Guid)">
+            <summary>
+            Remove post branch by Id from database
+            </summary>
+            <param name="id"></param>
+            <returns>ServerResponse</returns>
+        </member>
+        <member name="M:GalaxyExpress.API.Controllers.PostBranchController.CheckExistenceByParametersAsync(System.Int32,System.String,System.String)">
+            <summary>
+            Checking existence post branch in database
+            </summary>
+            <param name="parcelMachineNumber"></param>
+            <param name="globalAddress"></param>
+            <param name="localAddress"></param>
+            <returns>ServerResponse</returns>
+        </member>
+        <member name="M:GalaxyExpress.API.Controllers.PostBranchController.AddAsync(GalaxyExpress.BLL.DTOs.PostBranchDTOs.AddPostBranchDto)">
+            <summary>
+            Add a new post branch in databases
+            </summary>
+            <param name="addPostBranchDto"></param>
+            <returns>ServerResponse</returns>
         </member>
         <member name="T:GalaxyExpress.API.Controllers.UserController">
             <summary>

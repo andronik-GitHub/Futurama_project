@@ -12,7 +12,7 @@ namespace GalaxyExpress.DAL.Repositories
 {
     public class PaymentCardRepository : GenericRepository<PaymentCard>, IPaymentCardRepository
     {
-        public PaymentCardRepository(GalaxyExpressContext_SQLServer dbContext) : base(dbContext)
+        public PaymentCardRepository(GalaxyExpressDbContext dbContext) : base(dbContext)
         {
         }
 

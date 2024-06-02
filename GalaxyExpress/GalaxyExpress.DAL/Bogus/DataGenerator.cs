@@ -20,6 +20,92 @@ namespace GalaxyExpress.DAL.Bogus
         private const int PHONENUMBERS = USERS * 2;
         private const int PAYMENTCARDS = USERS * 2;
 
+        #region Vitalii Lists
+
+        public static List<ParcelMachine> ParcelMachines = new();
+        public static List<PostBranch> PostBranches = new();
+        public static List<PromoCode> PromoCodes = new();
+        public static List<UserParcelMachine> UserParcelMachines = new();
+        public static List<UserPostBranch> UserPostBranches = new();
+        public static List<UserPromoCode> UserPromoCodes = new();
+
+        #endregion
+
+        #region Vitalii Methods
+
+        public static List<Parcel> GenerateFakeParcels()
+        {
+            Faker faker = new();
+
+            List<Parcel> parcels = new();
+
+            for (int i = 0; i < 100; i++)
+            {
+                User sender = faker.PickRandom(Users);
+
+                User recipient;
+                do
+                {
+                    recipient = faker.PickRandom(Users);
+                } while (recipient.Id == sender.Id);
+
+                Faker<Parcel> fakeParcel = new Faker<Parcel>()
+                    .RuleFor(p => p.ParcelId, f => Guid.NewGuid())
+                    .RuleFor(p => p.SenderId, f => sender.Id)
+                    .RuleFor(p => p.RecipientId, f => recipient.Id)
+                    .RuleFor(p => p.InvoiceNumber, f => f.Random.ULong(1000000000000000, 9999999999999999))
+                    .RuleFor(p => p.Status, f => f.PickRandom<Status>())
+                    .RuleFor(p => p.MethodDelivery, f => f.PickRandom<MethodDelivery>())
+                    .RuleFor(p => p.ParcelWeight, f => f.Random.Float(0.1f, 50.0f))
+                    .RuleFor(p => p.SenderAddress, f => f.Address.FullAddress())
+                    .RuleFor(p => p.RecipientAddress, f => f.Address.FullAddress())
+                    .RuleFor(p => p.TypePackaging, f => f.PickRandom<TypePackaging>())
+                    .RuleFor(p => p.NumberOfPackages, f => f.Random.Int(1, 5))
+                    .RuleFor(p => p.LossCoverage, f => f.Random.Bool())
+                    .RuleFor(p => p.HomeDelivery, f => f.Random.Bool())
+                    .RuleFor(p => p.DeliveryPrice, f => f.Finance.Amount(10, 100))
+                    .RuleFor(p => p.DateOfDispatch, f => f.Date.Past(1))
+                    .RuleFor(p => p.DateOfReceipt, (f, p) => p.DateOfDispatch.AddDays(f.Random.Int(1, 10)));
+
+                parcels.Add(fakeParcel.Generate());
+            }
+
+            return parcels;
+        }
+
+        private static Faker<ParcelMachine> GetParcelMachineGenerator()
+        {
+            return new Faker<ParcelMachine>()
+                .RuleFor(pm => pm.ParcelMachineId, _ => Guid.NewGuid())
+                .RuleFor(pm => pm.ParcelMachineNumber, f => f.Random.Int())
+                .RuleFor(pm => pm.LocalAddress, f => $"{f.Address.StreetName()}, {f.Address.BuildingNumber()}")
+                .RuleFor(pm => pm.GlobalAddress, f => $"{f.Address.City()}, {f.Address.Country()}")
+                .RuleFor(pm => pm.Coordinates, f => $"{f.Random.Float()};{f.Random.Float()}");
+        }
+
+        private static Faker<PostBranch> GetPostBranchGenerator()
+        {
+            return new Faker<PostBranch>()
+                .RuleFor(pb => pb.Id, _ => Guid.NewGuid())
+                .RuleFor(pb => pb.BranchNumber, f => f.Random.Int())
+                .RuleFor(pm => pm.LocalAddress, f => $"{f.Address.StreetName()}, {f.Address.BuildingNumber()}")
+                .RuleFor(pm => pm.GlobalAddress, f => $"{f.Address.City()}, {f.Address.Country()}")
+                .RuleFor(pm => pm.Coordinates, f => $"{f.Random.Float()};{f.Random.Float()}");
+        }
+
+        private static Faker<PromoCode> GetPromoCodeGenerator()
+        {
+            return new Faker<PromoCode>()
+                .RuleFor(pc => pc.PromoCodeId, _ => Guid.NewGuid())
+                .RuleFor(pc => pc.Code, f => f.Finance.LitecoinAddress())
+                .RuleFor(pc => pc.StartDate, f => DateTime.Now)
+                .RuleFor(pc => pc.EndDate, f => DateTime.Now.AddDays(5))
+                .RuleFor(pc => pc.BonusSize, f => f.Random.Decimal())
+                .RuleFor(pc => pc.ActivationCounter, f => f.Random.Int());
+        }
+
+        #endregion
+
 
         private static Faker<User> GetUserGenerator()
         {
@@ -29,12 +115,13 @@ namespace GalaxyExpress.DAL.Bogus
                 .RuleFor(u => u.FirstName, f => f.Person.FirstName)
                 .RuleFor(u => u.LastName, f => f.Person.LastName)
                 .RuleFor(u => u.FatherName, f => f.Random.Int(0, 100) > 50 ? f.Person.FirstName : null)
-                .RuleFor(u => u.Birthday, f => 
+                .RuleFor(u => u.Birthday, f =>
                     f.Random.Int(0, 100) > 50 ? f.Date.Between(DateTime.Now.AddYears(-100), DateTime.Now.AddYears(-15)) : null)
                 .RuleFor(u => u.Sex, f => f.PickRandom<Gender>())
                 .RuleFor(u => u.BonusAccount, f => f.Random.Decimal(0.0m, 1000.0m))
                 .RuleFor(u => u.PasswordHash, f => new PasswordHasher<User>().HashPassword(null!, f.Internet.Password()));
         }
+
         private static Faker<PhoneNumber> GetPhoneNumberGenerator(Guid UserId)
         {
             return new Faker<PhoneNumber>()
@@ -94,10 +181,27 @@ namespace GalaxyExpress.DAL.Bogus
                 UserId = u.Id
             }));
 
-
             Users.ForEach(user => Emails.AddRange(GetEmailGenerator(user.Id).Generate(2)));
             Users.ForEach(user => PhoneNumbers.AddRange(GetPhoneNumberGenerator(user.Id).Generate(2)));
             Users.ForEach(user => PaymentCards.AddRange(GetPaymentCardGenerator(user.Id).Generate(2)));
+
+            ParcelMachines.AddRange(GetParcelMachineGenerator().Generate(50));
+            PostBranches.AddRange(GetPostBranchGenerator().Generate(50));
+            PromoCodes.AddRange(GetPromoCodeGenerator().Generate(50));
+
+            Faker faker = new();
+
+            for (int i = 0; i < 30; ++i)
+            {
+                Guid userId = faker.PickRandom(Users).Id,
+                    parcelMachineId = faker.PickRandom(ParcelMachines).ParcelMachineId,
+                    postBranchId = faker.PickRandom(PostBranches).BranchId,
+                    promoCodeId = faker.PickRandom(PromoCodes).Id;
+
+                UserParcelMachines.Add(new UserParcelMachine { Id = Guid.NewGuid(), UserId = userId, ParcelMachineId = parcelMachineId });
+                UserPostBranches.Add(new UserPostBranch { Id = Guid.NewGuid(), UserId = userId, PostBranchId = postBranchId });
+                UserPromoCodes.Add(new UserPromoCode { Id = Guid.NewGuid(), UserId = userId, PromoCodeId = promoCodeId });
+            }
         }
     }
 }

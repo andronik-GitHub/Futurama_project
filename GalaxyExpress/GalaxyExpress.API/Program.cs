@@ -28,7 +28,7 @@ var configuration = builder.Configuration;
         builder.Services.TryAdd(ServiceDescriptor.Singleton(typeof(ILogger<>), typeof(Logger<>)));
 
         // DbContext
-        builder.Services.AddDbContext<GalaxyExpressContext_SQLServer>(options =>
+        builder.Services.AddDbContext<GalaxyExpressDbContext>(options =>
         {
             options.UseSqlServer(
                     configuration.GetConnectionString("sqlServerConnection"),
@@ -44,7 +44,7 @@ var configuration = builder.Configuration;
             // Register ASP.NET Core Identity with method AddIdentity<TUser, TRole>
             builder.Services.AddIdentity<User, IdentityRole<Guid>>()
                 // To register the required EFCore implementation of Identity stores
-                .AddEntityFrameworkStores<GalaxyExpressContext_SQLServer>()
+                .AddEntityFrameworkStores<GalaxyExpressDbContext>()
                 .AddDefaultTokenProviders();
             // Adding Authentication
             builder.Services
@@ -85,6 +85,8 @@ var configuration = builder.Configuration;
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<IPhoneNumberService, PhoneNumberService>();
         builder.Services.AddScoped<IPaymentCardService, PaymentCardService>();
+        builder.Services.AddScoped<IParcelMachineService, ParcelMachineService>();
+        builder.Services.AddScoped<IPostBranchService, PostBranchService>();
     }
     #endregion
 
@@ -94,6 +96,8 @@ var configuration = builder.Configuration;
         builder.Services.AddScoped<IEmailRepository, EmailRepository>();
         builder.Services.AddScoped<IPhoneNumberRepository, PhoneNumberRepository>();
         builder.Services.AddScoped<IPaymentCardRepository, PaymentCardRepository>();
+        builder.Services.AddScoped<IParcelMachineRepository, ParcelMachineRepository>();
+        builder.Services.AddScoped<IPostBranchRepository, PostBranchRepository>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
     #endregion
@@ -144,4 +148,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();

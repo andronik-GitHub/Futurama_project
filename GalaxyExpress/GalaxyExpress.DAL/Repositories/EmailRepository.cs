@@ -12,7 +12,7 @@ namespace GalaxyExpress.DAL.Repositories
 {
     public class EmailRepository : GenericRepository<Email>, IEmailRepository
     {
-        public EmailRepository(GalaxyExpressContext_SQLServer dbContext) : base(dbContext)
+        public EmailRepository(GalaxyExpressDbContext dbContext) : base(dbContext)
         {
         }
 

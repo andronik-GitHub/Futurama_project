@@ -13,14 +13,14 @@ namespace GalaxyExpress.DAL.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly GalaxyExpressContext_SQLServer dbContext;
+        private readonly GalaxyExpressDbContext dbContext;
         private readonly UserManager<User> _userManager;
 
         private readonly IQueryable<User> entities;
 
 
         public UserRepository(
-            GalaxyExpressContext_SQLServer dbContext, 
+            GalaxyExpressDbContext dbContext, 
             UserManager<User> userManager)
         {
             this.dbContext = dbContext;

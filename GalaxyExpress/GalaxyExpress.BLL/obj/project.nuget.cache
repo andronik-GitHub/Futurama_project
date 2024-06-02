@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "dgSpecHash": "K1AjjrDeuh/lfnrDt27ynHuVNmCReTWZ0s1PWsWiDJ3mQsi4D3w8CmemQu7cC7fr7SN+ArqUUyTFzAGen4DcCw==",
-  "success": true,
+  "dgSpecHash": "PpqJA2xU1yIb8jY5pvntvnm97Tv9vT/uBJ8TDLsAK8kPMTwYqTXT3glt1S8/BLdUcxd0C8HgrCvxSYHBagoKQQ==",
+  "success": false,
   "projectFilePath": "D:\\IT\\AnyProjects\\Futurama\\GalaxyExpress\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\const\\.nuget\\packages\\bogus\\35.5.0\\bogus.35.5.0.nupkg.sha512",
@@ -189,5 +189,24 @@
     "C:\\Users\\const\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\const\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1100",
+      "level": "Error",
+      "message": "Не удалось разрешить \"AutoMapper (>= 13.0.1)\" для \"net6.0\". PackageSourceMapping включен, следующие источники не рассматривались: C:\\Program Files\\dotnet\\library-packs, Microsoft Visual Studio Offline Packages, nuget.org.",
+      "libraryId": "AutoMapper",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1100",
+      "level": "Error",
+      "message": "Не удалось разрешить \"FluentValidation (>= 11.9.1)\" для \"net6.0\". PackageSourceMapping включен, следующие источники не рассматривались: C:\\Program Files\\dotnet\\library-packs, Microsoft Visual Studio Offline Packages, nuget.org.",
+      "libraryId": "FluentValidation",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

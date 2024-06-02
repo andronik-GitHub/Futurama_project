@@ -41,12 +41,14 @@ namespace GalaxyExpress.BLL.Services
 
             return id;
         }
+
         public async Task<IEnumerable<GetDTO_User>> GetAllAsync()
         {
             // Use Mapster to project one collection onto another
             return MappingFunctions.MapListSourceToDestination<User, GetDTO_User>
                 (await _uow.Users.GetAllAsync());
         }
+
         public async Task<GetDTO_User?> GetAsync(Guid key)
         {
             User? user = await _uow.Users.GetByIdAsync(key);

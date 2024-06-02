@@ -12,18 +12,20 @@ namespace GalaxyExpress.DAL.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public GalaxyExpressContext_SQLServer _dbContext { get; set; }
+        public GalaxyExpressDbContext _dbContext { get; set; }
         public IUserRepository Users { get; set; }
         public IEmailRepository Emails { get; set; }
         public IPhoneNumberRepository PhoneNumbers { get; set; }
         public IPaymentCardRepository PaymentCards { get; set; }
+        public IParcelMachineRepository ParcelMachines { get; set; }
+        public IPostBranchRepository PostBranches { get; set; }
 
         public UserManager<User> _userManager { get; set; }
         public RoleManager<IdentityRole<Guid>> _roleManager { get; set; }
 
 
         public UnitOfWork(
-            GalaxyExpressContext_SQLServer dbContext, 
+            GalaxyExpressDbContext dbContext, 
 
             IUserRepository users, 
             IEmailRepository emails,
@@ -31,7 +33,9 @@ namespace GalaxyExpress.DAL.Repositories
             IPaymentCardRepository paymentCards,
 
             UserManager<User> userManager, 
-            RoleManager<IdentityRole<Guid>> roleManager)
+            RoleManager<IdentityRole<Guid>> roleManager, 
+            IParcelMachineRepository parcelMachines, 
+            IPostBranchRepository postBranches)
         {
             _dbContext = dbContext;
 
@@ -39,6 +43,8 @@ namespace GalaxyExpress.DAL.Repositories
             Emails = emails;
             PhoneNumbers = phoneNumbers;
             PaymentCards = paymentCards;
+            ParcelMachines = parcelMachines;
+            PostBranches = postBranches;
 
             _userManager = userManager;
             _roleManager = roleManager;

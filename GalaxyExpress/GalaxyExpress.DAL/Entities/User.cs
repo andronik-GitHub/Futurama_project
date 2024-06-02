@@ -32,5 +32,13 @@ namespace GalaxyExpress.DAL.Entities
         public ICollection<PhoneNumber> PhoneNumbers { get; set; } = default!; // one to many
         public ICollection<Email> Emails { get; set; } = default!; // one to many
         public ICollection<PaymentCard> PaymentCards { get; set; } = default!; // one to many
+
+        // Suda phav svoi 5 kopiyok Vitalik. Bo tu ne hotiv dopisuvati miy kod)
+        public ICollection<UserPromoCode>? UserPromoCodes { get; set; }
+        public ICollection<UserPostBranch>? UserPostOffices { get; set; }
+        public ICollection<UserParcelMachine>? UserParcelMachines { get; set; }
+        public ICollection<UserParcel>? UserParcels { get; set; }
+        public ICollection<Parcel>? SenderParcels { get; set; }
+        public ICollection<Parcel>? RecipientParcels { get; set; }
     }
 }

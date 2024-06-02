@@ -11,12 +11,14 @@ namespace GalaxyExpress.DAL.Repositories.Interfaces
 {
     public interface IUnitOfWork
     {
-        GalaxyExpressContext_SQLServer _dbContext { get; set; }
+        GalaxyExpressDbContext _dbContext { get; set; }
 
         IUserRepository Users { get; }
         IEmailRepository Emails { get; }
         IPhoneNumberRepository PhoneNumbers { get; }
         IPaymentCardRepository PaymentCards { get; }
+        IParcelMachineRepository ParcelMachines { get; }
+        IPostBranchRepository PostBranches { get; }
 
         UserManager<User> _userManager { get; set; }
         RoleManager<IdentityRole<Guid>> _roleManager { get; set; }
