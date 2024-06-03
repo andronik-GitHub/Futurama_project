@@ -15,6 +15,10 @@ namespace GalaxyExpress.BLL.Services.Interfaces
 
         // Identity
         Task<Guid> RegisterAsync(RegisterModel model);
+        Task<Guid> RegisterManagerAsync(RegisterModel model);
+        Task<Guid> RegisterAdminAsync(RegisterModel model);
+        Task<bool> AddRoleAsync(AddRoleModel model);
+
         Task<AuthenticationModel> GetTokenAsync(LoginModel model);
     }
 }

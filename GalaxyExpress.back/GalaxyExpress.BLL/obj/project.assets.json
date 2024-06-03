@@ -2,6 +2,22 @@
   "version": 3,
   "targets": {
     "net6.0": {
+      "AutoMapper/13.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Options": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/AutoMapper.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/AutoMapper.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Bogus/35.5.0": {
         "type": "package",
         "compile": {
@@ -11,6 +27,19 @@
         },
         "runtime": {
           "lib/net6.0/Bogus.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "FluentValidation/11.9.1": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/FluentValidation.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/FluentValidation.dll": {
             "related": ".xml"
           }
         }
@@ -3709,6 +3738,21 @@
     }
   },
   "libraries": {
+    "AutoMapper/13.0.1": {
+      "sha512": "/Fx1SbJ16qS7dU4i604Sle+U9VLX+WSNVJggk6MupKVkYvvBm4XqYaeFuf67diHefHKHs50uQIS2YEDFhPCakQ==",
+      "type": "package",
+      "path": "automapper/13.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "automapper.13.0.1.nupkg.sha512",
+        "automapper.nuspec",
+        "icon.png",
+        "lib/net6.0/AutoMapper.dll",
+        "lib/net6.0/AutoMapper.xml"
+      ]
+    },
     "Bogus/35.5.0": {
       "sha512": "iCXszbIvvxgfb01bPe/s3R6pQSKX6rpcQWqM7wqDt+lsMogR6fkSWBwqOxLpdXmMB7mgZNNk2hm2M1shoIiekA==",
       "type": "package",
@@ -3726,6 +3770,31 @@
         "lib/netstandard1.3/Bogus.xml",
         "lib/netstandard2.0/Bogus.dll",
         "lib/netstandard2.0/Bogus.xml"
+      ]
+    },
+    "FluentValidation/11.9.1": {
+      "sha512": "C+PqISSMdlOZZJx0Hx25atW32tv4vbpsaiQB+PLjK+ZGLzOFuHl1fUJ3Lny77mIZ31ZtYtNG0JgUjxa3wwLsWg==",
+      "type": "package",
+      "path": "fluentvalidation/11.9.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "fluent-validation-icon.png",
+        "fluentvalidation.11.9.1.nupkg.sha512",
+        "fluentvalidation.nuspec",
+        "lib/net5.0/FluentValidation.dll",
+        "lib/net5.0/FluentValidation.xml",
+        "lib/net6.0/FluentValidation.dll",
+        "lib/net6.0/FluentValidation.xml",
+        "lib/net7.0/FluentValidation.dll",
+        "lib/net7.0/FluentValidation.xml",
+        "lib/net8.0/FluentValidation.dll",
+        "lib/net8.0/FluentValidation.xml",
+        "lib/netstandard2.0/FluentValidation.dll",
+        "lib/netstandard2.0/FluentValidation.xml",
+        "lib/netstandard2.1/FluentValidation.dll",
+        "lib/netstandard2.1/FluentValidation.xml"
       ]
     },
     "Humanizer.Core/2.8.26": {
@@ -10458,11 +10527,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj",
+      "projectUniqueName": "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj",
       "projectName": "GalaxyExpress.BLL",
-      "projectPath": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj",
+      "projectPath": "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj",
       "packagesPath": "C:\\Users\\const\\.nuget\\packages\\",
-      "outputPath": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.BLL\\obj\\",
+      "outputPath": "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.BLL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -10484,8 +10553,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj": {
-              "projectPath": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj"
+            "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj": {
+              "projectPath": "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj"
             }
           }
         }
@@ -10568,25 +10637,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1100",
-      "level": "Error",
-      "message": "Не удалось разрешить \"AutoMapper (>= 13.0.1)\" для \"net6.0\". PackageSourceMapping включен, следующие источники не рассматривались: C:\\Program Files\\dotnet\\library-packs, Microsoft Visual Studio Offline Packages, nuget.org.",
-      "libraryId": "AutoMapper",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    },
-    {
-      "code": "NU1100",
-      "level": "Error",
-      "message": "Не удалось разрешить \"FluentValidation (>= 11.9.1)\" для \"net6.0\". PackageSourceMapping включен, следующие источники не рассматривались: C:\\Program Files\\dotnet\\library-packs, Microsoft Visual Studio Offline Packages, nuget.org.",
-      "libraryId": "FluentValidation",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    }
-  ]
+  }
 }

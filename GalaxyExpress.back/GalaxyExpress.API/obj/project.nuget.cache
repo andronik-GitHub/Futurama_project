@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Yh9KpDs8lVK2gm5C6G4Akg1vvlrPZ848YI1QuwFfGB6pwu/thTwe3iRVuCw0uS9DCyJlCWYa0PwZEE8/dfg1lQ==",
-  "success": false,
-  "projectFilePath": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.API\\GalaxyExpress.API.csproj",
+  "dgSpecHash": "eBXl5iWzNGjKF4BjCfOitpKkJaMNOmkjyDlFVzrB2uj6jy7ym1sudIJu8wBnsByYNgWkKr22W1KeZSgn2aqSiQ==",
+  "success": true,
+  "projectFilePath": "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.API\\GalaxyExpress.API.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\const\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\const\\.nuget\\packages\\bogus\\35.5.0\\bogus.35.5.0.nupkg.sha512",
+    "C:\\Users\\const\\.nuget\\packages\\fluentvalidation\\11.9.1\\fluentvalidation.11.9.1.nupkg.sha512",
     "C:\\Users\\const\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\const\\.nuget\\packages\\mapster\\7.4.0\\mapster.7.4.0.nupkg.sha512",
     "C:\\Users\\const\\.nuget\\packages\\mapster.core\\1.2.1\\mapster.core.1.2.1.nupkg.sha512",
@@ -195,24 +197,5 @@
     "C:\\Users\\const\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\const\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1100",
-      "level": "Error",
-      "message": "Не удалось разрешить \"AutoMapper (>= 13.0.1)\" для \"net6.0\". PackageSourceMapping включен, следующие источники не рассматривались: C:\\Program Files\\dotnet\\library-packs, Microsoft Visual Studio Offline Packages, nuget.org.",
-      "libraryId": "AutoMapper",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    },
-    {
-      "code": "NU1100",
-      "level": "Error",
-      "message": "Не удалось разрешить \"FluentValidation (>= 11.9.1)\" для \"net6.0\". PackageSourceMapping включен, следующие источники не рассматривались: C:\\Program Files\\dotnet\\library-packs, Microsoft Visual Studio Offline Packages, nuget.org.",
-      "libraryId": "FluentValidation",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    }
-  ]
+  "logs": []
 }

@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using GalaxyExpress.BLL.Extensions;
 
 namespace GalaxyExpress.BLL.Services
 {
@@ -44,9 +45,18 @@ namespace GalaxyExpress.BLL.Services
 
         public async Task<IEnumerable<GetDTO_User>> GetAllAsync()
         {
-            // Use Mapster to project one collection onto another
-            return MappingFunctions.MapListSourceToDestination<User, GetDTO_User>
-                (await _uow.Users.GetAllAsync());
+            var users = await _uow.Users.GetAllAsync();
+            var usersWithRoles = new List<GetDTO_User>();
+
+            foreach (var user in users)
+            {
+                var roles = await _uow._userManager.GetRolesAsync(user);
+                var userDTO = MappingFunctions.MapSourceToDestination<User, GetDTO_User>(user);
+                userDTO.Roles = roles;
+                usersWithRoles.Add(userDTO);
+            }
+
+            return usersWithRoles;
         }
 
         public async Task<GetDTO_User?> GetAsync(Guid key)
@@ -55,6 +65,7 @@ namespace GalaxyExpress.BLL.Services
 
             GetDTO_User? userDTO = MappingFunctions
                 .MapSourceToDestination<User?, GetDTO_User?>(user); // Mapping with Mapster
+            if (user != null && userDTO != null) userDTO.Roles = await _uow._userManager.GetRolesAsync(user);
 
             return userDTO;
         }
@@ -131,6 +142,7 @@ namespace GalaxyExpress.BLL.Services
             // If no username has been set, then the default username is set
             if (string.IsNullOrEmpty(user.UserName)) user.UserName = Authorization.default_username + Guid.NewGuid().ToString();
 
+
             var userResult = await _uow.Users.CreateAsync(user);
             if (userResult == Guid.Empty) return Guid.Empty;
 
@@ -144,9 +156,63 @@ namespace GalaxyExpress.BLL.Services
                 throw new Exception("The user was successfully created, but it was not possible to link the phone number to him!");
 
             var roleResult = await _uow._userManager.AddToRoleAsync(user, Authorization.default_role.ToString());
+            Console.WriteLine(userResult);
             if (roleResult.Succeeded) return userResult;
 
             throw new Exception("The user was successfully created, but the role could not be assigned to him!");
+        }
+        public async Task<Guid> RegisterManagerAsync(RegisterModel model)
+        {
+            var result = await RegisterAsync(model); // Register new user
+            if (result == Guid.Empty) return result; // Checking whether the user has been created correctly
+
+            // Mapping using Mapster
+            var addRoleModel = MappingFunctions.MapSourceToDestination<RegisterModel, AddRoleModel>(model);
+            addRoleModel.Role = Authorization.Roles.Manager.ToString();
+
+            return (await AddRoleAsync(addRoleModel)) ? result : Guid.Empty; // Add to user new role and return result
+        }
+        public async Task<Guid> RegisterAdminAsync(RegisterModel model)
+        {
+            var result = await RegisterAsync(model); // Register new user
+            if (result == Guid.Empty) return result; // Checking whether the user has been created correctly
+
+            // Mapping using Mapster
+            var addRoleModel = MappingFunctions.MapSourceToDestination<RegisterModel, AddRoleModel>(model);
+            addRoleModel.Role = Authorization.Roles.Admin.ToString();
+
+            return (await AddRoleAsync(addRoleModel)) ? result : Guid.Empty; // Add to user new role and return result
+        }
+        public async Task<bool> AddRoleAsync(AddRoleModel model)
+        {
+            try
+            {
+                var user = await _uow.Users.GetByLoginAsync(model.Login);
+
+                if (user == null || (await _uow._userManager.CheckPasswordAsync(user, model.Password)) == false)
+                    throw new Exception("Incorrect Credentials for user!");
+
+                //  If the user is a valid one
+                // Check if the passed Role is present in our system 
+                var roleExists = Enum
+                    .GetNames(typeof(Authorization.Roles))
+                    .Any(x => x.ToLower() == model.Role?.ToLower());
+
+                // If not, throws an error message
+                if (roleExists == false) throw new Exception($"Role {model.Role} not found!");
+
+                var validRole = Enum
+                    .GetValues(typeof(Authorization.Roles))
+                    .Cast<Authorization.Roles>()
+                    .FirstOrDefault(x => x.ToString().ToLower() == model.Role?.ToLower());
+
+                return (await _uow._userManager.AddToRoleAsync(user, validRole.ToString())).Succeeded;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\n\tErrors: {ex.Message}");
+                return false;
+            }
         }
         public async Task<AuthenticationModel> GetTokenAsync(LoginModel model)
         {

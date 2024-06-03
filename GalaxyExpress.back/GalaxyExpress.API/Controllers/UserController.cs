@@ -1,4 +1,5 @@
 ﻿using GalaxyExpress.BLL.DTOs.UserDTOs;
+using GalaxyExpress.BLL.Extensions;
 using GalaxyExpress.BLL.Services.Interfaces;
 using GalaxyExpress.DAL.Entities.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -428,6 +429,138 @@ namespace GalaxyExpress.API.Controllers
                 _logger.LogError(
                     "Error in [{ErrorClassName}]->[{MethodName}] => {ErrorMessage}",
                     this.GetType().Name, nameof(RegisterAsync), ex.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Registering new manager
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST https://localhost:4444/galaxy-express/User/register-manager
+        ///     {
+        ///         "PhoneNumber": "+1 00 (000) 00-00",
+        ///         "Login": "John Snow",
+        ///         "Password": "qwerty123",
+        ///         "FirstName": "John",
+        ///         "LastName": "Snow",
+        ///         "FatherName": "Ned"
+        ///     }
+        /// </remarks>
+        /// <param name="model">RegisterModel for creating new manager</param>
+        /// <returns>Returns a message about successful manager registration</returns>
+        /// <response code="200">Success</response>
+        [HttpPost("register-manager", Name = nameof(RegisterManagerAsync))] // POST: galaxy-express/User/register-manager
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> RegisterManagerAsync(RegisterModel model)
+        {
+            try
+            {
+                var result = await _userService.RegisterManagerAsync(model);
+
+                var resultMessage = result != Guid.Empty ?
+                    $"Successfully registered Manager with id [{result}]" :
+                    $"Failed to register Manager with id [{result}]";
+
+                _logger.LogInformation("Result: {Result}", resultMessage);
+                return Ok(resultMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    "Error in [{ErrorClassName}]->[{MethodName}] => {ErrorMessage}",
+                    this.GetType().Name, nameof(RegisterAsync), ex.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Registering new admin
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST https://localhost:4444/galaxy-express/User/register-admin
+        ///     {
+        ///         "PhoneNumber": "+1 00 (000) 00-00",
+        ///         "Login": "John Snow",
+        ///         "Password": "qwerty123",
+        ///         "FirstName": "John",
+        ///         "LastName": "Snow",
+        ///         "FatherName": "Ned"
+        ///     }
+        /// </remarks>
+        /// <param name="model">RegisterModel for creating new admin</param>
+        /// <returns>Returns a message about successful admin registration</returns>
+        /// <response code="200">Success</response>
+        [HttpPost("register-admin", Name = nameof(RegisterAdminAsync))] // POST: galaxy-express/User/register-admin
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> RegisterAdminAsync(RegisterModel model)
+        {
+            try
+            {
+                var result = await _userService.RegisterAdminAsync(model);
+
+                var resultMessage = result != Guid.Empty ?
+                    $"Successfully registered Admin with id [{result}]" :   
+                    $"Failed to register Admin with id [{result}]";
+
+                _logger.LogInformation("Result: {Result}", resultMessage);
+                return Ok(resultMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    "Error in [{ErrorClassName}]->[{MethodName}] => {ErrorMessage}",
+                    this.GetType().Name, nameof(RegisterAsync), ex.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Add role ot user
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST https://localhost:4444/ef/User/add-role
+        ///     {
+        ///         "Email": "john_snow@gmail.com",
+        ///         "Password": "Pa$$w0rd"
+        ///         "Role": "Administrator"
+        ///     }
+        /// </remarks>
+        /// <param name="model">RegisterModel for creating new user-administrator</param>
+        /// <returns>Returns a message about successful user-administrator registration</returns>
+        /// <response code="200">Success</response>
+        [HttpPost("add-role", Name = nameof(AddRoleAsync))] // POST: ef/User/add-role
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> AddRoleAsync(AddRoleModel model)
+        {
+            try
+            {
+                var result = await _userService.AddRoleAsync(model);
+
+                var resultMessage = result ?
+                    $"Role [{model.Role}] is successfully added to user with login [{model.Login}]." :
+                    $"Role [{model.Role}] has not been added to user with login [{model.Login}].";
+
+                _logger.LogInformation("Result: {Result}", resultMessage);
+                return Ok(resultMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    "Error in [{ErrorClassName}]->[{MethodName}] => {ErrorMessage}",
+                    this.GetType().Name, nameof(AddRoleAsync), ex.Message);
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }

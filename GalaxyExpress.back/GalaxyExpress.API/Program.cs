@@ -23,6 +23,18 @@ var configuration = builder.Configuration;
 {
     #region API
     {
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowLocalhost3000",
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+        });
+
+
         // Logging
         builder.Services.TryAdd(ServiceDescriptor.Singleton<ILoggerFactory, LoggerFactory>());
         builder.Services.TryAdd(ServiceDescriptor.Singleton(typeof(ILogger<>), typeof(Logger<>)));
@@ -33,7 +45,9 @@ var configuration = builder.Configuration;
             options.UseSqlServer(
                     configuration.GetConnectionString("sqlServerConnection"),
                     op => op.MigrationsAssembly("GalaxyExpress.API")
-                );
+                ).EnableSensitiveDataLogging();
+
+            //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });
 
         #region IDENTITY
@@ -127,6 +141,7 @@ builder.Services.AddSwaggerGen(option =>
 //DataGenerator.InitBogusData(); // seeding db
 var app = builder.Build();
 
+app.UseCors("AllowLocalhost3000");
 
 if (app.Environment.IsDevelopment())
 {
@@ -148,4 +163,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
- await app.RunAsync();
+await app.RunAsync();

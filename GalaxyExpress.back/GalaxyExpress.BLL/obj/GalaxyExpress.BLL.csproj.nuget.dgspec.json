@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj": {}
+    "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj": {}
   },
   "projects": {
-    "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj": {
+    "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj",
+        "projectUniqueName": "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj",
         "projectName": "GalaxyExpress.BLL",
-        "projectPath": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj",
+        "projectPath": "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.BLL\\GalaxyExpress.BLL.csproj",
         "packagesPath": "C:\\Users\\const\\.nuget\\packages\\",
-        "outputPath": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.BLL\\obj\\",
+        "outputPath": "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.BLL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,8 +33,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj": {
-                "projectPath": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj"
+              "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj": {
+                "projectPath": "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj"
               }
             }
           }
@@ -118,14 +118,14 @@
         }
       }
     },
-    "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj": {
+    "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj",
+        "projectUniqueName": "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj",
         "projectName": "GalaxyExpress.DAL",
-        "projectPath": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj",
+        "projectPath": "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.DAL\\GalaxyExpress.DAL.csproj",
         "packagesPath": "C:\\Users\\const\\.nuget\\packages\\",
-        "outputPath": "D:\\IT\\AnyProjects\\GalaxyExpress\\GalaxyExpress.DAL\\obj\\",
+        "outputPath": "D:\\IT\\AnyProjects\\Futurama_project\\GalaxyExpress.back\\GalaxyExpress.DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

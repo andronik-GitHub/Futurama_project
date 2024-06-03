@@ -12,6 +12,7 @@ namespace GalaxyExpress.BLL.DTOs.UserDTOs
         public string UserName { get; set; } = default!;
         public string Login { get; set; } = default!;
         public IEnumerable<string> Emails { get; set; } = default!;
+        public IEnumerable<string> Roles { get; set; } = default!;
         public DateTime DateCreated { get; set; }
         public DateTime? DateUpdated { get; set; }
         public DateTime? DateDeleted { get; set; }

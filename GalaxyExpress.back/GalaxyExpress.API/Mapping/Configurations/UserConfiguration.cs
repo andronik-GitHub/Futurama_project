@@ -50,5 +50,14 @@ namespace GalaxyExpress.API.Mapping.Configurations
                 .Map(dest => dest.FatherName, src => src.FatherName)
                 .TwoWays();
         }
+
+        private static void RegisterAddRoleModel()
+        {
+            TypeAdapterConfig<RegisterModel, AddRoleModel>
+                .NewConfig()
+                .TwoWays()
+                .Map(dest => dest.Login, src => src.Login)
+                .Map(dest => dest.Password, src => src.Password);
+        }
     }
 }
