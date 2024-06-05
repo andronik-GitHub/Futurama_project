@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using GalaxyExpress.BLL.Extensions;
+using System.Security.Cryptography;
 
 namespace GalaxyExpress.BLL.Services
 {
@@ -206,6 +207,12 @@ namespace GalaxyExpress.BLL.Services
                     .Cast<Authorization.Roles>()
                     .FirstOrDefault(x => x.ToString().ToLower() == model.Role?.ToLower());
 
+                // Detach existing user instance from the context if it's already being tracked
+                var localUser = _uow._dbContext.Users.Local.FirstOrDefault(u => u.Id == user.Id);
+                if (localUser != null) _uow._dbContext.Entry(localUser).State = EntityState.Detached;
+
+                // Finally, we need to add these tokens into our RefreshTokens Table, so that we can reuse them
+                _uow._dbContext.Users.Attach(user); // Attach the updated user entity
                 return (await _uow._userManager.AddToRoleAsync(user, validRole.ToString())).Succeeded;
             }
             catch (Exception ex)
@@ -218,7 +225,7 @@ namespace GalaxyExpress.BLL.Services
         {
             // Creating a new Response Object,
             var authenticationModel = new AuthenticationModel();
-            // Checking if the passeed login is valid
+            // Checking if the passed login is valid
             var user = await _uow.Users.GetByLoginAsync(model.Login);
 
             // Return a message if not valid
@@ -236,7 +243,6 @@ namespace GalaxyExpress.BLL.Services
 
                 // Call the CreateJWTToken function
                 JwtSecurityToken token = await CreateJwtToken(user);
-                Console.WriteLine(token);
                 authenticationModel.Token = new JwtSecurityTokenHandler().WriteToken(token);
                 authenticationModel.Emails = user.Emails.Select(e => e.EmailAddress).ToList();
                 authenticationModel.PhoneNumbers = user.PhoneNumbers.Select(pn => pn.Number).ToList();
@@ -245,34 +251,37 @@ namespace GalaxyExpress.BLL.Services
                 var roles = await _uow._userManager.GetRolesAsync(user).ConfigureAwait(false);
                 authenticationModel.Roles = roles.ToList();
 
-
                 // Check if there are any active refresh tokens available for the authenticated user
-                //if (user.RefreshTokens == null || user.RefreshTokens.Any(a => a.IsActive))
-                //{
-                //    // Set the available active refresh token to response
-                //    var activeRefreshToken = user.RefreshTokens?.FirstOrDefault(a => a.IsActive);
-                //    if (activeRefreshToken != null)
-                //    {
-                //        authenticationModel.RefreshToken = activeRefreshToken.Token;
-                //        authenticationModel.RefreshTokenExpiration = activeRefreshToken.Expires;
-                //    }
-                //}
-                //else
-                //{
-                //    // If there are not active Refresh Token available, we call our
-                //    // CreateRefreshToken method to generate a refresh token
-                //    var refreshToken = CreateRefreshToken();
+                if (user.RefreshTokens == null || user.RefreshTokens.Any(a => a.IsActive))
+                {
+                    // Set the available active refresh token to response
+                    var activeRefreshToken = user.RefreshTokens?.FirstOrDefault(a => a.IsActive);
+                    if (activeRefreshToken != null)
+                    {
+                        authenticationModel.RefreshToken = activeRefreshToken.Token;
+                        authenticationModel.RefreshTokenExpiration = activeRefreshToken.Expires;
+                    }
+                }
+                else
+                {
+                    // If there are not active Refresh Token available, we call our
+                    // CreateRefreshToken method to generate a refresh token
+                    var refreshToken = CreateRefreshToken();
 
-                //    //  Once generated, we set the details of the Refresh Token to the Response Object
-                //    authenticationModel.RefreshToken = refreshToken.Token;
-                //    authenticationModel.RefreshTokenExpiration = refreshToken.Expires;
-                //    user.RefreshTokens.Add(refreshToken);
+                    //  Once generated, we set the details of the Refresh Token to the Response Object
+                    authenticationModel.RefreshToken = refreshToken.Token;
+                    authenticationModel.RefreshTokenExpiration = refreshToken.Expires;
 
-                //    // Finally, we need to add these tokens into our RefreshTokens Table, so that we can reuse them
-                //    await _uow._userManager.UpdateAsync(user);
-                //    await _uow.SaveChangesAsync();
-                //}
+                    // Detach existing user instance from the context if it's already being tracked
+                    var localUser = _uow._dbContext.Users.Local.FirstOrDefault(u => u.Id == user.Id);
+                    if (localUser != null) _uow._dbContext.Entry(localUser).State = EntityState.Detached;
+                    _uow._dbContext.Users.Attach(user); // Attach the updated user entity
 
+                    // Finally, we need to add these tokens into our RefreshTokens Table, so that we can reuse them
+                    user.RefreshTokens.Add(refreshToken);
+                    await _uow._userManager.UpdateAsync(user);
+                    await _uow.SaveChangesAsync();
+                }
 
                 // Return the response object
                 return authenticationModel;
@@ -283,6 +292,60 @@ namespace GalaxyExpress.BLL.Services
             authenticationModel.Message = "Incorrect Credentials for user";
             return authenticationModel;
         }
+        public async Task<AuthenticationModel> GetRefreshTokenAsync(string token)
+        {
+            // Create a new Response object
+            var authenticationModel = new AuthenticationModel();
+
+            // Check if there any matching user for the token in database
+            var user = _uow._userManager.Users
+                .SingleOrDefault(u => u.RefreshTokens == null || u.RefreshTokens.Any(t => t.Token == token));
+            if (user == null) // If no matching user found, pass a message “Token did not match any users.”
+            {
+                authenticationModel.IsAuthenticated = false;
+                authenticationModel.Message = "Token did not match any users.";
+
+                return authenticationModel;
+            }
+
+            //  Get the Refresh token object of the matching record
+            var refreshToken = user.RefreshTokens?.Single(x => x.Token == token);
+
+            // Check is the selected token is active, if not active, send a message “Token Not Active.”
+            if (refreshToken == null || !refreshToken.IsActive)
+            {
+                authenticationModel.IsAuthenticated = false;
+                authenticationModel.Message = "Token Not Active.";
+
+                return authenticationModel;
+            }
+
+            // Revoke Current Refresh Token. Every time we request a new JWT, we have to make sure
+            // that we replace the refresh token with a new one
+            refreshToken.Revoked = DateTime.UtcNow;
+
+            // Generate new Refresh Token and save to Database
+            RefreshToken newRefreshToken = CreateRefreshToken();
+            user.RefreshTokens?.Add(newRefreshToken);
+            await _uow._userManager.UpdateAsync(user);
+            await _uow.SaveChangesAsync();
+
+            // Generates new jwt
+            authenticationModel.IsAuthenticated = true;
+
+            JwtSecurityToken jwtSecurityToken = await CreateJwtToken(user);
+            authenticationModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            authenticationModel.UserName = user.UserName;
+            authenticationModel.Emails = user.Emails?.Select(e => e.EmailAddress).ToList() ?? new();
+            authenticationModel.Roles = (await _uow._userManager.GetRolesAsync(user)).ToList();
+
+            authenticationModel.RefreshToken = newRefreshToken.Token;
+            authenticationModel.RefreshTokenExpiration = newRefreshToken.Expires;
+
+            return authenticationModel;
+        }
+
+
         private async Task<JwtSecurityToken> CreateJwtToken(User user)
         {
             // Gets all the claims of the user(user details)
@@ -291,14 +354,13 @@ namespace GalaxyExpress.BLL.Services
             var roles = await _uow._userManager.GetRolesAsync(user);
 
             // Creating a new JWT Security Token and returns them
-            var roleClaims = new List<Claim>();
-            roles.ToList().ForEach(role => roleClaims.Add(new Claim("roles", role)));
+            var roleClaims = roles != null ? roles.Select(role => new Claim("roles", role)).ToList() : new List<Claim>();
 
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Emails.Select(e => e.EmailAddress).FirstOrDefault() ?? ""),
+                new Claim(JwtRegisteredClaimNames.Email, user.Emails?.Select(e => e.EmailAddress).FirstOrDefault() ?? ""),
                 new Claim("uid", user.Id.ToString()),
             }
             .Union(userClaims)
@@ -315,6 +377,19 @@ namespace GalaxyExpress.BLL.Services
                 signingCredentials: signingCredentials);
 
             return jwtSecurityToken;
+        }
+        private static RefreshToken CreateRefreshToken()
+        {
+            byte[] randomNumber = new byte[64];
+            using RandomNumberGenerator numberGenerator = RandomNumberGenerator.Create();
+
+            numberGenerator.GetBytes(randomNumber);
+            return new RefreshToken
+            {
+                Token = Convert.ToBase64String(randomNumber),
+                Expires = DateTime.UtcNow.AddDays(10),
+                Created = DateTime.UtcNow
+            };
         }
 
         #endregion

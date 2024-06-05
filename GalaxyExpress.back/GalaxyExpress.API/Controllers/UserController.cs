@@ -589,6 +589,9 @@ namespace GalaxyExpress.API.Controllers
             {
                 var result = await _userService.GetTokenAsync(model);
 
+                // Save refreshTokens as cookies
+                if (result.RefreshToken != null) SetRefreshTokenInCookie(result.RefreshToken);
+
                 return Ok(result);
             }
             catch (Exception ex)
@@ -599,6 +602,59 @@ namespace GalaxyExpress.API.Controllers
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Get refresh-token
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST https://localhost:4444/galaxy-express/User/refresh-token
+        ///     {
+        ///         "Login": "John Snow",
+        ///         "Password": "Pa$$w0rd"
+        ///     }
+        /// </remarks>
+        /// <returns>Returns JWT Security token</returns>
+        /// <response code="200">Success</response>
+        [HttpPost("refresh-token", Name = nameof(GetRefreshTokenAsync))] // POST: ef/User/refresh-token
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> GetRefreshTokenAsync()
+        {
+            try
+            {
+                var refreshToken = Request.Cookies["refreshToken"]; // Get the Refresh Token from our cookies
+
+                var response = await _userService // Returns the response object from the Service Method
+                    .GetRefreshTokenAsync(refreshToken ?? throw new InvalidOperationException());
+
+                if (!string.IsNullOrEmpty(response.RefreshToken)) // Sets the new Refresh Token to our Cookie
+                    SetRefreshTokenInCookie(response.RefreshToken);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    "Error in [{ErrorClassName}]->[{MethodName}] => {ErrorMessage}",
+                    this.GetType().Name, nameof(GetRefreshTokenAsync), ex.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+
+
+        private void SetRefreshTokenInCookie(string refreshToken)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(10),
+            };
+            Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }
 
         #endregion

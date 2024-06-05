@@ -47,16 +47,16 @@ namespace GalaxyExpress.DAL.Data.Configurations
                 .Property(u => u.BonusAccount)
                 .HasColumnType("DECIMAL(18,2)")
                 .HasDefaultValue(0);
-            //builder
-            //    .OwnsMany(
-            //        user => user.RefreshTokens,
-            //        refreshToken =>
-            //        {
-            //            refreshToken.Property(rt => rt.Token).IsRequired();
-            //            refreshToken.Property(rt => rt.Expires).IsRequired();
-            //            refreshToken.Property(rt => rt.Created).IsRequired();
-            //            refreshToken.Property(rt => rt.Revoked).IsRequired();
-            //        });
+            builder
+                .OwnsMany(
+                    user => user.RefreshTokens,
+                    refreshToken =>
+                    {
+                        refreshToken.Property(rt => rt.Token).IsRequired();
+                        refreshToken.Property(rt => rt.Expires).IsRequired();
+                        refreshToken.Property(rt => rt.Created).IsRequired();
+                        refreshToken.Property(rt => rt.Revoked).IsRequired();
+                    });
 
 
             builder // one to many - Users to PhoneNumbers

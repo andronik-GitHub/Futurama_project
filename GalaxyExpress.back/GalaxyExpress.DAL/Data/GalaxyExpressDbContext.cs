@@ -1,6 +1,7 @@
 ﻿using GalaxyExpress.DAL.Bogus;
 using GalaxyExpress.DAL.Data.Configurations;
 using GalaxyExpress.DAL.Entities;
+using GalaxyExpress.DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

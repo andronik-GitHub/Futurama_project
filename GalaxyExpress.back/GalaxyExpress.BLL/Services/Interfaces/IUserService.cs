@@ -20,5 +20,6 @@ namespace GalaxyExpress.BLL.Services.Interfaces
         Task<bool> AddRoleAsync(AddRoleModel model);
 
         Task<AuthenticationModel> GetTokenAsync(LoginModel model);
+        Task<AuthenticationModel> GetRefreshTokenAsync(string token);
     }
 }

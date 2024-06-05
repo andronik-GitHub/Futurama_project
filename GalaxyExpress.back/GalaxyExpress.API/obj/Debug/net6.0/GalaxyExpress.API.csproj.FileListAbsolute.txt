@@ -267,7 +267,6 @@ D:\IT\AnyProjects\Futurama_project\GalaxyExpress.back\GalaxyExpress.API\obj\Debu
 D:\IT\AnyProjects\Futurama_project\GalaxyExpress.back\GalaxyExpress.API\obj\Debug\net6.0\GalaxyExpress.API.AssemblyInfoInputs.cache
 D:\IT\AnyProjects\Futurama_project\GalaxyExpress.back\GalaxyExpress.API\obj\Debug\net6.0\GalaxyExpress.API.AssemblyInfo.cs
 D:\IT\AnyProjects\Futurama_project\GalaxyExpress.back\GalaxyExpress.API\obj\Debug\net6.0\GalaxyExpress.API.csproj.CoreCompileInputs.cache
-D:\IT\AnyProjects\Futurama_project\GalaxyExpress.back\GalaxyExpress.API\obj\Debug\net6.0\GalaxyExpress.API.MvcApplicationPartsAssemblyInfo.cs
 D:\IT\AnyProjects\Futurama_project\GalaxyExpress.back\GalaxyExpress.API\obj\Debug\net6.0\GalaxyExpress.API.MvcApplicationPartsAssemblyInfo.cache
 D:\IT\AnyProjects\Futurama_project\GalaxyExpress.back\GalaxyExpress.API\obj\Debug\net6.0\GalaxyExpress.API.sourcelink.json
 D:\IT\AnyProjects\Futurama_project\GalaxyExpress.back\GalaxyExpress.API\obj\Debug\net6.0\staticwebassets.build.json

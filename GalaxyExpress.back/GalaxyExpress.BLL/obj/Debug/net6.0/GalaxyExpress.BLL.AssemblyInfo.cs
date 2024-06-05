@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GalaxyExpress.BLL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+894f628f54fc70465959901f0fba99cc2f7555f5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+065aff36d57588b9733b6cf221c9eed2e71974dd")]
 [assembly: System.Reflection.AssemblyProductAttribute("GalaxyExpress.BLL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GalaxyExpress.BLL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -45,7 +45,8 @@ var configuration = builder.Configuration;
             options.UseSqlServer(
                     configuration.GetConnectionString("sqlServerConnection"),
                     op => op.MigrationsAssembly("GalaxyExpress.API")
-                ).EnableSensitiveDataLogging();
+                )
+                .EnableSensitiveDataLogging();
 
             //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });

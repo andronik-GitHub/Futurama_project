@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GalaxyExpress.DAL.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,8 @@ namespace GalaxyExpress.DAL.Entities
         public decimal BonusAccount { get; set; } = default!;
 
 
-        //public List<RefreshToken>? RefreshTokens { get; set; }
+        public ICollection<RefreshToken>? RefreshTokens { get; set; }
+
         public ICollection<PhoneNumber> PhoneNumbers { get; set; } = default!; // one to many
         public ICollection<Email> Emails { get; set; } = default!; // one to many
         public ICollection<PaymentCard> PaymentCards { get; set; } = default!; // one to many
