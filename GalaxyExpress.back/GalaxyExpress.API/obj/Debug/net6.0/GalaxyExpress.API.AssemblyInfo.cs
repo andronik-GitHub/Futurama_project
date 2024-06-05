@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GalaxyExpress.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+065aff36d57588b9733b6cf221c9eed2e71974dd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1370980c0ac9ae89293d2732bf036096c9f517e5")]
 [assembly: System.Reflection.AssemblyProductAttribute("GalaxyExpress.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GalaxyExpress.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

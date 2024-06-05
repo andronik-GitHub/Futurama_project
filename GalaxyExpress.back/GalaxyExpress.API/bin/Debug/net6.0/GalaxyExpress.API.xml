@@ -613,6 +613,21 @@
             <returns>Returns JWT Security token</returns>
             <response code="200">Success</response>
         </member>
+        <member name="M:GalaxyExpress.API.Controllers.UserController.RevokeTokenAsync(GalaxyExpress.DAL.Entities.Identity.RevokeTokenRequest)">
+            <summary>
+            Revoke token
+            </summary>
+            <remarks>
+            Sample request:
+            
+                POST https://localhost:4444/galaxy-express/User/revoke-token
+                {
+                    "token": "token"
+                }
+            </remarks>
+            <returns>Returns a message whether the token was successfully revoked</returns>
+            <response code="200">Success</response>
+        </member>
         <member name="T:GalaxyExpress.API.Mapping.Configurations.EmailConfiguration">
             <summary>
             Registration Email configurations

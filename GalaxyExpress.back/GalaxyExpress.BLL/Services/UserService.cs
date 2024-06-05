@@ -344,6 +344,26 @@ namespace GalaxyExpress.BLL.Services
 
             return authenticationModel;
         }
+        public async Task<bool> RevokeTokenAsync(string token)
+        {
+            var user = _uow._userManager.Users
+                .SingleOrDefault(u => u.RefreshTokens != null && u.RefreshTokens.Any(t => t.Token == token));
+
+            // Return false if no user found with token
+            if (user == null) return await Task.FromResult(false);
+
+            var refreshToken = user.RefreshTokens?.Single(x => x.Token == token);
+
+            // Return false if token is not active
+            if (refreshToken == null || !refreshToken.IsActive) return await Task.FromResult(false);
+
+            // If the passed refresh token is valid, we revoke it here and save to the database
+            refreshToken.Revoked = DateTime.UtcNow;
+            await _uow._userManager.UpdateAsync(user);
+            await _uow.SaveChangesAsync();
+
+            return await Task.FromResult(true);
+        }
 
 
         private async Task<JwtSecurityToken> CreateJwtToken(User user)

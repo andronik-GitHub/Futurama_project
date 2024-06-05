@@ -540,7 +540,7 @@ namespace GalaxyExpress.API.Controllers
         /// <param name="model">RegisterModel for creating new user-administrator</param>
         /// <returns>Returns a message about successful user-administrator registration</returns>
         /// <response code="200">Success</response>
-        [HttpPost("add-role", Name = nameof(AddRoleAsync))] // POST: ef/User/add-role
+        [HttpPost("add-role", Name = nameof(AddRoleAsync))] // POST: galaxy-express/User/add-role
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> AddRoleAsync(AddRoleModel model)
@@ -580,7 +580,7 @@ namespace GalaxyExpress.API.Controllers
         /// </remarks>
         /// <returns>Returns JWT Security token</returns>
         /// <response code="200">Success</response>
-        [HttpPost("token", Name = nameof(GetTokenAsync))] // POST: ef/User/token
+        [HttpPost("token", Name = nameof(GetTokenAsync))] // POST: galaxy-express/User/token
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> GetTokenAsync(LoginModel model)
@@ -618,7 +618,7 @@ namespace GalaxyExpress.API.Controllers
         /// </remarks>
         /// <returns>Returns JWT Security token</returns>
         /// <response code="200">Success</response>
-        [HttpPost("refresh-token", Name = nameof(GetRefreshTokenAsync))] // POST: ef/User/refresh-token
+        [HttpPost("refresh-token", Name = nameof(GetRefreshTokenAsync))] // POST: galaxy-express/User/refresh-token
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> GetRefreshTokenAsync()
@@ -644,6 +644,50 @@ namespace GalaxyExpress.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+
+        /// <summary>
+        /// Revoke token
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST https://localhost:4444/galaxy-express/User/revoke-token
+        ///     {
+        ///         "token": "token"
+        ///     }
+        /// </remarks>
+        /// <returns>Returns a message whether the token was successfully revoked</returns>
+        /// <response code="200">Success</response>
+        [HttpPost("revoke-token", Name = nameof(RevokeTokenAsync))] // POST: galaxy-express/User/revoke-token
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> RevokeTokenAsync([FromBody] RevokeTokenRequest model)
+        {
+            try
+            {
+                // Accept token from request body or cookie
+                var token = model.Token ?? Request.Cookies["RefreshToken"];
+                if (string.IsNullOrEmpty(token)) return BadRequest(new { message = "Token is required" });
+
+                // Revoke the Token
+                var response = await _userService.RevokeTokenAsync(token);
+                if (!response) return NotFound(new { message = "Token not found" });
+
+                return Ok(new { message = "Token revoked" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    "Error in [{ErrorClassName}]->[{MethodName}] => {ErrorMessage}",
+                    this.GetType().Name, nameof(RevokeTokenAsync), ex.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
 
 
 

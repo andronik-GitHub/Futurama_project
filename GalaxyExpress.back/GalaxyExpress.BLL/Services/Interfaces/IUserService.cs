@@ -21,5 +21,6 @@ namespace GalaxyExpress.BLL.Services.Interfaces
 
         Task<AuthenticationModel> GetTokenAsync(LoginModel model);
         Task<AuthenticationModel> GetRefreshTokenAsync(string token);
+        Task<bool> RevokeTokenAsync(string token);
     }
 }
