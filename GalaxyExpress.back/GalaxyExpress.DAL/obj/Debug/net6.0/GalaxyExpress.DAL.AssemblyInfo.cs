@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GalaxyExpress.DAL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9aa687cb56a66a4f5684e43fa2de03899230be39")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+37cf5fd734b8871f46d027eaf6fab02be3dfe186")]
 [assembly: System.Reflection.AssemblyProductAttribute("GalaxyExpress.DAL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GalaxyExpress.DAL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace GalaxyExpress.DAL.Entities
@@ -42,5 +44,16 @@ namespace GalaxyExpress.DAL.Entities
         public ICollection<UserParcel>? UserParcels { get; set; }
         public ICollection<Parcel>? SenderParcels { get; set; }
         public ICollection<Parcel>? RecipientParcels { get; set; }
+
+
+        public override string ToString()
+        {
+            return JsonSerializer
+                .Serialize(this, new JsonSerializerOptions 
+                {
+                    WriteIndented = true,
+                    ReferenceHandler = ReferenceHandler.Preserve
+                });
+        }
     }
 }

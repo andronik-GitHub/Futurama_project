@@ -489,6 +489,23 @@
             <response code="200">Success</response>
             <response code="500">If it was not possible to adding element to the database</response>
         </member>
+        <member name="M:GalaxyExpress.API.Controllers.UserController.AddEmailToUserAsync(GalaxyExpress.BLL.DTOs.UserDTOs.AddEmailToUser)">
+            <summary>
+            Add email to user
+            </summary>
+            <remarks>
+            Sample request:
+            
+                POST https://localhost:4444/galaxy-express/User/add-email
+                {
+                    "userId": "Guid",
+                    "email": "email"
+                }
+            </remarks>
+            <returns>Updated user with updated emails</returns>
+            <response code="200">Success</response>
+            <response code="500">If it was not possible to adding element to the database</response>
+        </member>
         <member name="M:GalaxyExpress.API.Controllers.UserController.GetSecuredData">
             <summary>
             Get secured data

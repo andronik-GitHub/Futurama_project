@@ -357,6 +357,43 @@ namespace GalaxyExpress.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Add email to user
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST https://localhost:4444/galaxy-express/User/add-email
+        ///     {
+        ///         "userId": "Guid",
+        ///         "email": "email"
+        ///     }
+        /// </remarks>
+        /// <returns>Updated user with updated emails</returns>
+        /// <response code="200">Success</response>
+        /// <response code="500">If it was not possible to adding element to the database</response>
+        [HttpPost("add-email", Name = nameof(AddEmailToUserAsync))] // GET: galaxy-express/add-email
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> AddEmailToUserAsync([FromBody] AddEmailToUser model)
+        {
+            try
+            {
+                var user = await _userService.AddEmailToUserAsync(model.UserId, model.Email);
+                _logger.LogInformation("Email address successfully added");
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    "Error in [{ErrorClassName}]->[{MethodName}] => {ErrorMessage}",
+                    this.GetType().Name, nameof(AddEmailToUserAsync), ex.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
 
         #endregion
 

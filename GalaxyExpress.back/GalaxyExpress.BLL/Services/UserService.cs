@@ -131,6 +131,31 @@ namespace GalaxyExpress.BLL.Services
             return count;
         }
 
+        public async Task<User> AddEmailToUserAsync(Guid id, string email)
+        {
+            var user = await _uow.Users.GetByIdAsync(id);
+            if (user == null) throw new Exception("User not found!");
+
+            await _uow.Emails.CreateAsync(new Email { EmailAddress = email, UserId = user.Id });
+            await _uow.SaveChangesAsync();
+
+
+            // Detach existing user instance from the context if it's already being tracked
+            var localUser = _uow._dbContext.Users.Local.FirstOrDefault(u => u.Id == user.Id);
+            if (localUser != null) _uow._dbContext.Entry(localUser).State = EntityState.Detached;
+
+            // Finally, we need to add these tokens into our RefreshTokens Table, so that we can reuse them
+            _uow._dbContext.Users.Attach(user); // Attach the updated user entity
+            user = await _uow.Users.GetByIdAsync(id);
+            if (user == null) throw new Exception("User not found!");
+
+            GetDTO_User? userDTO = MappingFunctions
+                .MapSourceToDestination<User?, GetDTO_User?>(user); // Mapping with Mapster
+            if (user != null && userDTO != null) userDTO.Roles = await _uow._userManager.GetRolesAsync(user);
+
+            return user!;
+        }
+
         #endregion
 
         #region Identity

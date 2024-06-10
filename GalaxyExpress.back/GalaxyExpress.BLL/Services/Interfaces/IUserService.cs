@@ -1,4 +1,5 @@
 ﻿using GalaxyExpress.BLL.DTOs.UserDTOs;
+using GalaxyExpress.DAL.Entities;
 using GalaxyExpress.DAL.Entities.Identity;
 using GalaxyExpress.DAL.Entities.Identity.ResetPassword;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +15,7 @@ namespace GalaxyExpress.BLL.Services.Interfaces
     {
         Task<int> GetCountOfUsersAsync();
         Task<int> GetCountOfUsersNotDeletedAsync();
+        Task<User> AddEmailToUserAsync(Guid id, string email);
 
         // Identity
         Task<Guid> RegisterAsync(RegisterModel model);
