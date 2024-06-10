@@ -1,5 +1,7 @@
 ﻿using GalaxyExpress.BLL.DTOs.UserDTOs;
 using GalaxyExpress.DAL.Entities.Identity;
+using GalaxyExpress.DAL.Entities.Identity.ResetPassword;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,5 +24,8 @@ namespace GalaxyExpress.BLL.Services.Interfaces
         Task<AuthenticationModel> GetTokenAsync(LoginModel model);
         Task<AuthenticationModel> GetRefreshTokenAsync(string token);
         Task<bool> RevokeTokenAsync(string token);
+
+        Task ForgotPasswordAsync(ForgotPasswordModel model);
+        Task<IdentityResult> ResetPasswordAsync(ResetPasswordModel model);
     }
 }

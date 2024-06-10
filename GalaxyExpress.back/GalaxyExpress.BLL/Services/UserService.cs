@@ -17,18 +17,26 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using GalaxyExpress.BLL.Extensions;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Http;
+using System.Security.Policy;
+using MimeKit;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using GalaxyExpress.DAL.Entities.Identity.ResetPassword;
 
 namespace GalaxyExpress.BLL.Services
 {
     public class UserService : IUserService
     {
         private IUnitOfWork _uow;
+        private readonly IEmailSender _emailSender;
         private readonly JWT _jwt;
 
-        public UserService(IUnitOfWork uow, IOptions<JWT> jwt)
+        public UserService(IUnitOfWork uow, IOptions<JWT> jwt, IEmailSender emailSender)
         {
             _uow = uow;
             _jwt = jwt.Value;
+            _emailSender = emailSender;
         }
 
 
@@ -221,6 +229,7 @@ namespace GalaxyExpress.BLL.Services
                 return false;
             }
         }
+
         public async Task<AuthenticationModel> GetTokenAsync(LoginModel model)
         {
             // Creating a new Response Object,
@@ -363,6 +372,74 @@ namespace GalaxyExpress.BLL.Services
             await _uow.SaveChangesAsync();
 
             return await Task.FromResult(true);
+        }
+
+        public async Task ForgotPasswordAsync(ForgotPasswordModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Email)) throw new Exception("Email is empty!");
+
+            var user = await _uow.Users.GetByEmailAsync(model.Email) ?? throw new Exception("Email is not valid");
+
+            var resetLink = $"https://link-to-reset-page.com";
+            var message = new Message(
+                new string[] { model.Email },
+                "Forgot password",
+                $@"
+    <table cellpadding=""0"" cellspacing=""0"" width=""100%"">
+        <tr>
+            <td align=""center"">
+                <table cellpadding=""0"" cellspacing=""0"" width=""600"" style=""border: 1px solid #dddddd;"">
+                    <tr>
+                        <td align=""center"" bgcolor=""#0073e6"" style=""padding: 20px 0;"">
+                            <h1 style=""color: #ffffff; margin: 0;"">Reset Your Password</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor=""#ffffff"" style=""padding: 20px;"">
+                            <p>Hi {user.UserName},</p>
+                            <p>You recently requested to reset your password for your account. Click the button below to reset it.</p>
+                            <p><a href=""{resetLink}"" target=""_blank"" style=""display: inline-block; padding: 10px 20px; color: #ffffff; background-color: #0073e6; text-decoration: none;"">Reset Your Password</a></p>
+                            <p>If you did not request a password reset, please ignore this email or reply to let us know. This password reset link is only valid for the next 24 hours.</p>
+                            <p>Thanks,<br>The GalaxyExpress Team</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor=""#f9f9f9"" style=""padding: 20px; text-align: center;"">
+                            <p style=""margin: 0;"">If you're having trouble clicking the password reset button, copy and paste the URL below into your web browser:</p>
+                            <p style=""margin: 0;""><a href=""{resetLink}"" target=""_blank"" style=""color: #0073e6;"">[Reset Link]</a></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor=""#0073e6"" style=""padding: 20px; text-align: center; color: #ffffff;"">
+                            <p style=""margin: 0;"">&copy; {DateTime.Now.Year} GalaxyExpress. All rights reserved.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+");
+            await _emailSender.SendEmailAsync(message);
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(ResetPasswordModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Email)) throw new Exception("Email is empty!");
+
+            var user = await _uow.Users.GetByEmailAsync(model.Email) ?? throw new Exception("Email is not valid");
+
+
+            // Detach existing user instance from the context if it's already being tracked
+            var localUser = _uow._dbContext.Users.Local.FirstOrDefault(u => u.Id == user.Id);
+            if (localUser != null) _uow._dbContext.Entry(localUser).State = EntityState.Detached;
+
+            // Finally, we need to add these tokens into our RefreshTokens Table, so that we can reuse them
+            _uow._dbContext.Users.Attach(user); // Attach the updated user entity
+
+            var code = await _uow._userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _uow._userManager.ResetPasswordAsync(user, code, model.Password);
+
+            return result;
         }
 
 

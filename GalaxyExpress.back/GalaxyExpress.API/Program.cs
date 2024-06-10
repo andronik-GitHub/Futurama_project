@@ -5,6 +5,7 @@ using GalaxyExpress.DAL.Bogus;
 using GalaxyExpress.DAL.Data;
 using GalaxyExpress.DAL.Entities;
 using GalaxyExpress.DAL.Entities.Identity;
+using GalaxyExpress.DAL.Entities.Identity.ResetPassword;
 using GalaxyExpress.DAL.Repositories;
 using GalaxyExpress.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -96,6 +97,13 @@ var configuration = builder.Configuration;
 
     #region BLL
     {
+        var sendEmailConfig = builder.Configuration
+            .GetSection("SendEmailConfiguration")
+            .Get<SendEmailConfiguration>();
+        builder.Services.AddSingleton(sendEmailConfig);
+
+        builder.Services.AddScoped<IEmailSender, EmailSender>();
+
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<IPhoneNumberService, PhoneNumberService>();

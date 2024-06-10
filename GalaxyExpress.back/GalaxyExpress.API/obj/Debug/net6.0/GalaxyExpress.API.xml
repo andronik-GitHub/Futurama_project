@@ -374,6 +374,7 @@
             </summary>
             <param name="userService">User service</param>
             <param name="loggerFactory">User logger factory</param>
+            <param name="emailSender">Email sender service</param>
         </member>
         <member name="M:GalaxyExpress.API.Controllers.UserController.GetAllUsersAsync">
             <summary>
@@ -626,6 +627,35 @@
                 }
             </remarks>
             <returns>Returns a message whether the token was successfully revoked</returns>
+            <response code="200">Success</response>
+        </member>
+        <member name="M:GalaxyExpress.API.Controllers.UserController.ForgotPasswordAsync(GalaxyExpress.DAL.Entities.Identity.ResetPassword.ForgotPasswordModel)">
+            <summary>
+            Forgot password
+            </summary>
+            <remarks>
+            Sample request:
+            
+                POST https://localhost:4444/galaxy-express/User/forgot-password
+                {
+                    "email": "email"
+                }
+            </remarks>
+            <response code="200">Success</response>
+        </member>
+        <member name="M:GalaxyExpress.API.Controllers.UserController.ResetPasswordAsync(GalaxyExpress.DAL.Entities.Identity.ResetPassword.ResetPasswordModel)">
+            <summary>
+            Forgot password
+            </summary>
+            <remarks>
+            Sample request:
+            
+                POST https://localhost:4444/galaxy-express/User/reset-password
+                {
+                    "email": "email",
+                    "password": ""
+                }
+            </remarks>
             <response code="200">Success</response>
         </member>
         <member name="T:GalaxyExpress.API.Mapping.Configurations.EmailConfiguration">

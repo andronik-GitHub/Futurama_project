@@ -1,10 +1,14 @@
 ﻿using GalaxyExpress.BLL.DTOs.UserDTOs;
 using GalaxyExpress.BLL.Extensions;
 using GalaxyExpress.BLL.Services.Interfaces;
+using GalaxyExpress.DAL.Entities;
 using GalaxyExpress.DAL.Entities.Identity;
+using GalaxyExpress.DAL.Entities.Identity.ResetPassword;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Net.Mail;
+using System.Net;
 
 namespace GalaxyExpress.API.Controllers
 {
@@ -25,6 +29,7 @@ namespace GalaxyExpress.API.Controllers
         /// </summary>
         /// <param name="userService">User service</param>
         /// <param name="loggerFactory">User logger factory</param>
+        /// <param name="emailSender">Email sender service</param>
         public UserController(IUserService userService, ILoggerFactory loggerFactory)
         {
             _userService = userService;
@@ -645,7 +650,6 @@ namespace GalaxyExpress.API.Controllers
             }
         }
 
-
         /// <summary>
         /// Revoke token
         /// </summary>
@@ -677,6 +681,70 @@ namespace GalaxyExpress.API.Controllers
                 if (!response) return NotFound(new { message = "Token not found" });
 
                 return Ok(new { message = "Token revoked" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    "Error in [{ErrorClassName}]->[{MethodName}] => {ErrorMessage}",
+                    this.GetType().Name, nameof(RevokeTokenAsync), ex.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// Forgot password
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST https://localhost:4444/galaxy-express/User/forgot-password
+        ///     {
+        ///         "email": "email"
+        ///     }
+        /// </remarks>
+        /// <response code="200">Success</response>
+        [HttpPost("forgot-password", Name = nameof(ForgotPasswordAsync))]
+        public async Task<ActionResult> ForgotPasswordAsync([FromBody] ForgotPasswordModel model)
+        {
+            try
+            {
+                await _userService.ForgotPasswordAsync(model);
+
+                return Ok(StatusCodes.Status200OK);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    "Error in [{ErrorClassName}]->[{MethodName}] => {ErrorMessage}",
+                    this.GetType().Name, nameof(RevokeTokenAsync), ex.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Forgot password
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST https://localhost:4444/galaxy-express/User/reset-password
+        ///     {
+        ///         "email": "email",
+        ///         "password": ""
+        ///     }
+        /// </remarks>
+        /// <response code="200">Success</response>
+        [HttpPost("reset-password", Name = nameof(ResetPasswordAsync))]
+        public async Task<ActionResult> ResetPasswordAsync([FromBody] ResetPasswordModel model)
+        {
+            try
+            {
+                var result = await _userService.ResetPasswordAsync(model);
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
